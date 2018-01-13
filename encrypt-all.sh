@@ -13,6 +13,4 @@ if [[ -z "$MY_KEY" ]]; then
     exit 1
 fi;
 
-find . -type f -regex '.*[^g][^p][^g]' -print0 | xargs --null -I FILE gpg2 --batch --yes -r "$MY_KEY" --encrypt FILE
-
-#find . -type f -name '*.gpg' -print 0 | xargs --null git add
+find . -type f -print0 | grep -zvE '.*\.gpg$' | grep -zv '.git' | grep -zv '.*~' | grep -zvE '.*\#$' | xargs --null -I FILE gpg2 --batch --yes -r "$MY_KEY" --encrypt FILE
